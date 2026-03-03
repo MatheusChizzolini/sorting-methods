@@ -43,4 +43,25 @@ public class List {
             current = current.getNext();
         }
     }
+
+    public void selectionSort() {
+        Node current = start;
+        while (current.getNext() != null) {
+            int min = current.getValue();
+            Node minPosition = current;
+            Node aux = current.getNext();
+            while (aux != null) {
+                if (aux.getValue() < min) {
+                    min = aux.getValue();
+                    minPosition = aux;
+                }
+
+                aux = aux.getNext();
+            }
+
+            minPosition.setValue(current.getValue());
+            current.setValue(min);
+            current = current.getNext();
+        }
+    }
 }
