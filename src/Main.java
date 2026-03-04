@@ -10,7 +10,7 @@ public class Main {
         list.addLast(4);
         list.addLast(2);
 
-        list.selectionSort();
+        list.binaryInsertionSort();
         list.printList();
     }
 }

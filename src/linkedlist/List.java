@@ -64,4 +64,61 @@ public class List {
             current = current.getNext();
         }
     }
+
+    private int length(Node goal) {
+        int count = 0;
+        Node current = start;
+        while (current != goal) {
+            count++;
+            current = current.getNext();
+        }
+
+        return count;
+    }
+
+    private Node seek(int index) {
+        Node current = start;
+        while (current != null && index > 0) {
+            index--;
+            current = current.getNext();
+        }
+
+        return current;
+    }
+
+    private Node binarySearch(int value, Node current) {
+        int start = 0;
+        int end = length(current) - 1;
+        int midIndex = (start + end) / 2;
+        Node mid = seek(midIndex);
+        while (start <= end) {
+            if (value > mid.getValue()) {
+                start = midIndex + 1;
+            } else {
+                end = midIndex - 1;
+            }
+
+            midIndex = (start + end) / 2;
+            mid = seek(midIndex);
+        }
+
+        return seek(start);
+    }
+
+    public void binaryInsertionSort() {
+        Node current = start.getNext();
+        while (current != null) {
+            int value = current.getValue();
+            Node position = binarySearch(value, current);
+            Node aux = current;
+            while (aux != position) {
+                aux.setValue(aux.getPrev().getValue());
+                aux = aux.getPrev();
+            }
+
+            position.setValue(value);
+            current = current.getNext();
+        }
+    }
+
 }
