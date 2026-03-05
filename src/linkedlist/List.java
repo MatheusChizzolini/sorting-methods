@@ -121,4 +121,24 @@ public class List {
         }
     }
 
+    public void bubbleSort() {
+        Node aux = end;
+        boolean hasChanged = true;
+        while (aux != start && hasChanged) {
+            hasChanged = false;
+            Node current = start;
+            while (current.getNext() != null) {
+                if (current.getValue() > current.getNext().getValue()) {
+                    int value = current.getValue();
+                    current.setValue(current.getNext().getValue());
+                    current.getNext().setValue(value);
+                    hasChanged = true;
+                }
+
+                current = current.getNext();
+            }
+
+            aux = aux.getPrev();
+        }
+    }
 }
