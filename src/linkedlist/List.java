@@ -141,4 +141,33 @@ public class List {
             aux = aux.getPrev();
         }
     }
+
+    public void heapSort() {
+        Node aux = end;
+        while (aux != start) {
+            int length = length(aux) + 1, value;
+            int parent = length / 2 - 1;
+            while (parent >= 0) {
+                int leftChild = 2 * parent + 1, rightChild = leftChild + 1;
+                int maxChild = leftChild;
+                if (rightChild < length && seek(rightChild).getValue() > seek(leftChild).getValue()) {
+                    maxChild = rightChild;
+                }
+
+                Node parentNode = seek(parent), maxChildNode = seek(maxChild);
+                if (maxChildNode.getValue() > parentNode.getValue()) {
+                    value = maxChildNode.getValue();
+                    maxChildNode.setValue(parentNode.getValue());
+                    parentNode.setValue(value);
+                }
+
+                parent--;
+            }
+
+            value = start.getValue();
+            start.setValue(aux.getValue());
+            aux.setValue(value);
+            aux = aux.getPrev();
+        }
+    }
 }
