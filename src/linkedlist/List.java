@@ -66,14 +66,18 @@ public class List {
     }
 
     private int length(Node goal) {
-        int count = 0;
-        Node current = start;
-        while (current != goal) {
-            count++;
-            current = current.getNext();
-        }
+        if (start == null) {
+            return 0;
+        } else {
+            int count = 1;
+            Node current = start;
+            while (current != goal) {
+                count++;
+                current = current.getNext();
+            }
 
-        return count;
+            return count;
+        }
     }
 
     private Node seek(int index) {
@@ -145,7 +149,7 @@ public class List {
     public void heapSort() {
         Node aux = end;
         while (aux != start) {
-            int length = length(aux) + 1, value;
+            int length= length(aux), value;
             int parent = length / 2 - 1;
             while (parent >= 0) {
                 int leftChild = 2 * parent + 1, rightChild = leftChild + 1;
@@ -168,6 +172,30 @@ public class List {
             start.setValue(aux.getValue());
             aux.setValue(value);
             aux = aux.getPrev();
+        }
+    }
+
+    public void shellSort() {
+        int distance = 1;
+        while (distance < length(end)) {
+            distance = 3 * distance + 1;
+        }
+
+        distance = distance / 3;
+        while (distance >= 1) {
+            for (int i = distance; i < length(end); i++) {
+                Node current = seek(i);
+                int value = current.getValue();
+                int position = i;
+                while (position >= distance && current.getValue() < seek(position - distance).getValue()) {
+                    current.setValue(seek(position - distance).getValue());
+                    position = position - distance;
+                }
+
+                seek(position).setValue(value);
+            }
+
+            distance = distance / 3;
         }
     }
 }
