@@ -26,7 +26,7 @@ public class Record {
         this.value = value;
     }
 
-    public void writeFile(RandomAccessFile file) {
+    public void write(RandomAccessFile file) {
         try {
             file.writeInt(value);
             for (int i = 0; i < SIZE; i++) {
@@ -35,7 +35,7 @@ public class Record {
         } catch (IOException ignored) {}
     }
 
-    public void readFile(RandomAccessFile file) {
+    public void read(RandomAccessFile file) {
         try {
             value = file.readInt();
             for (int i = 0; i < SIZE; i++) {

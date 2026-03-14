@@ -12,7 +12,9 @@ public class FileMain {
         file.addLast(new Record(11));
         file.addLast(new Record(10));
         file.addLast(new Record(9));
+        file.seek(0);
 
+        file.insertionSort();
         file.printFile();
     }
 }
