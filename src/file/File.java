@@ -132,4 +132,44 @@ public class File {
         }
     }
 
+    public void heapSort() {
+        int n = size();
+        Record record = new Record(), aux = new Record();
+        while (n > 1) {
+            int parent = n / 2 - 1;
+            while (parent >= 0) {
+                int left = 2 * parent + 1, right = left + 1;
+                int max = left;
+                seek(left);
+                record.read(file);
+                aux.read(file);
+                if (right < n && aux.getValue() > record.getValue()) {
+                    max = right;
+                }
+
+                seek(max);
+                record.read(file);
+                seek(parent);
+                aux.read(file);
+                if (record.getValue() > aux.getValue()) {
+                    seek(max);
+                    aux.write(file);
+                    seek(parent);
+                    record.write(file);
+                }
+
+                parent--;
+            }
+
+            n--;
+            seek(0);
+            aux.read(file);
+            seek(n);
+            record.read(file);
+            seek(0);
+            record.write(file);
+            seek(n);
+            aux.write(file);
+        }
+    }
 }
