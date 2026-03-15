@@ -109,4 +109,27 @@ public class File {
             min.write(file);
         }
     }
+
+    public void bubbleSort() {
+        Record record = new Record(), aux = new Record();
+        int currentSize = size();
+        boolean swapped = true;
+        while (currentSize > 1 && swapped) {
+            swapped = false;
+            for (int i = 0; i < currentSize - 1; i++) {
+                seek(i);
+                record.read(file);
+                aux.read(file);
+                if (record.getValue() > aux.getValue()) {
+                    seek(i);
+                    aux.write(file);
+                    record.write(file);
+                    swapped = true;
+                }
+            }
+
+            currentSize--;
+        }
+    }
+
 }
