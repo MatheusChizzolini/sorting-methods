@@ -85,4 +85,28 @@ public class File {
             }
         }
     }
+
+    public void selectionSort() {
+        int size = size();
+        Record record = new Record(), aux = new Record(), min = new Record();
+        for (int i = 0; i < size - 1; i++) {
+            seek(i);
+            record.read(file);
+            int minValue = record.getValue(), minIndex = i;
+            for (int j = i + 1; j < size; j++) {
+                aux.read(file);
+                if (aux.getValue() < minValue) {
+                    minValue = aux.getValue();
+                    minIndex = j;
+                }
+            }
+
+            seek(minIndex);
+            min.read(file);
+            seek(minIndex);
+            record.write(file);
+            seek(i);
+            min.write(file);
+        }
+    }
 }
