@@ -172,4 +172,37 @@ public class File {
             aux.write(file);
         }
     }
+
+    public void shellSort() {
+        Record record = new Record(), aux = new Record();
+        int n = size(), dist = 1;
+        while (dist < n) {
+            dist = 3 * dist + 1;
+        }
+
+        dist = dist / 3;
+        while (dist >= 1) {
+            for (int i = dist; i < n; i++) {
+                int j = i;
+                seek(i);
+                record.read(file);
+                seek(j - dist);
+                aux.read(file);
+                while (j >= dist && record.getValue() < aux.getValue()) {
+                    seek(j);
+                    aux.write(file);
+                    j -= dist;
+                    if (j >= dist) {
+                        seek(j - dist);
+                        aux.read(file);
+                    }
+                }
+
+                seek(j);
+                record.write(file);
+            }
+
+            dist = dist / 3;
+        }
+    }
 }
