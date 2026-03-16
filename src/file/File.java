@@ -86,6 +86,41 @@ public class File {
         }
     }
 
+    public int binarySearch(int value) {
+        int start = 0, end = size() - 1;
+        Record record = new Record();
+
+        int mid = (start + end) / 2;
+        seek(mid);
+        record.read(file);
+        while (start < end && record.getValue() != value) {
+            if (record.getValue() < value) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+
+            mid = (start + end) / 2;
+            seek(mid);
+            record.read(file);
+        }
+
+        if (value > record.getValue()) {
+            return mid + 1;
+        }
+
+        return mid;
+    }
+
+    public void binaryInsertionSort() {
+        Record record  = new Record();
+        for (int i = 1; i < size(); i++) {
+            seek(i);
+            record.read(file);
+
+        }
+    }
+
     public void selectionSort() {
         int size = size();
         Record record = new Record(), aux = new Record(), min = new Record();
