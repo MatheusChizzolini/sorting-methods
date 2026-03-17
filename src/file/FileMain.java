@@ -14,7 +14,7 @@ public class FileMain {
         file.addLast(new Record(9));
         file.seek(0);
 
-        file.shellSort();
+        file.binaryInsertionSort();
         file.printFile();
     }
 }
