@@ -4,7 +4,7 @@ import linkedlist.LinkedListMain;
 
 public class Main {
     public static void main(String[] args) {
-        LinkedListMain.execute();
-        //FileMain.execute();
+//        LinkedListMain.execute();
+        FileMain.execute();
     }
 }

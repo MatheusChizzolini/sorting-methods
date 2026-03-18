@@ -302,18 +302,24 @@ public class File {
             if (flag) {
                 while (i < j && record.getValue() <= aux.getValue()) {
                     i++;
+                    seek(i);
+                    record.read(file);
                 }
             } else {
                 while (i < j && aux.getValue() >= record.getValue()) {
                     j--;
+                    seek(j);
+                    aux.read(file);
                 }
             }
 
-            seek(i);
-            aux.write(file);
-            seek(j);
-            record.write(file);
-            flag = !flag;
+            if (i < j) {
+                seek(i);
+                aux.write(file);
+                seek(j);
+                record.write(file);
+                flag = !flag;
+            }
         }
 
         if (start < i - 1) {
