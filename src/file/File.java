@@ -285,4 +285,43 @@ public class File {
             dist = dist / 3;
         }
     }
+
+    public void quickSortWithoutPivot() {
+        quickSortWithoutPivot(0, size() - 1);
+    }
+
+    private void quickSortWithoutPivot(int start, int end) {
+        Record record = new Record(), aux = new Record();
+        int i = start, j = end;
+        boolean flag = true;
+        while (i < j) {
+            seek(i);
+            record.read(file);
+            seek(j);
+            aux.read(file);
+            if (flag) {
+                while (i < j && record.getValue() <= aux.getValue()) {
+                    i++;
+                }
+            } else {
+                while (i < j && aux.getValue() >= record.getValue()) {
+                    j--;
+                }
+            }
+
+            seek(i);
+            aux.write(file);
+            seek(j);
+            record.write(file);
+            flag = !flag;
+        }
+
+        if (start < i - 1) {
+            quickSortWithoutPivot(start, i - 1);
+        }
+
+        if (j + 1 < end) {
+            quickSortWithoutPivot(j + 1, end);
+        }
+    }
 }
