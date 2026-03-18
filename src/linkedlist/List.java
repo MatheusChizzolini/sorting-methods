@@ -147,6 +147,40 @@ public class List {
     }
 
     public void shakeSort() {
+        Node left = start, right = end;
+        boolean swapped = true;
+        while (left != right && swapped) {
+            swapped = false;
+            Node current = left;
+            while (current != right) {
+                if (current.getValue() > current.getNext().getValue()) {
+                    int value = current.getValue();
+                    current.setValue(current.getNext().getValue());
+                    current.getNext().setValue(value);
+                    swapped = true;
+                }
+
+                current = current.getNext();
+            }
+
+            right = right.getPrev();
+            if (swapped) {
+                swapped = false;
+                current = right;
+                while (current != left) {
+                    if (current.getValue() < current.getPrev().getValue()) {
+                        int value = current.getValue();
+                        current.setValue(current.getPrev().getValue());
+                        current.getPrev().setValue(value);
+                        swapped = true;
+                    }
+
+                    current = current.getPrev();
+                }
+
+                left = left.getNext();
+            }
+        }
     }
 
     public void heapSort() {
