@@ -174,6 +174,44 @@ public class File {
         }
     }
 
+    public void shakeSort() {
+        Record record = new Record(), aux = new Record();
+        int start = 0, end = size() - 1;
+        boolean swapped = true;
+        while (start < end && swapped) {
+            swapped = false;
+            for (int i = start; i < end; i++) {
+                seek(i);
+                record.read(file);
+                aux.read(file);
+                if (record.getValue() > aux.getValue()) {
+                    seek(i);
+                    aux.write(file);
+                    record.write(file);
+                    swapped = true;
+                }
+            }
+
+            end--;
+            if (swapped) {
+                swapped = false;
+                for (int i = end; i > start; i--) {
+                    seek(i);
+                    record.read(file);
+                    aux.read(file);
+                    if (record.getValue() > aux.getValue()) {
+                        seek(i);
+                        aux.write(file);
+                        record.write(file);
+                        swapped = true;
+                    }
+                }
+
+                start++;
+            }
+        }
+    }
+
     public void heapSort() {
         int n = size();
         Record record = new Record(), aux = new Record();

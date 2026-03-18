@@ -146,6 +146,9 @@ public class List {
         }
     }
 
+    public void shakeSort() {
+    }
+
     public void heapSort() {
         Node aux = end;
         while (aux != start) {
