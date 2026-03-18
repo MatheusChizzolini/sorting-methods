@@ -235,4 +235,36 @@ public class List {
             distance = distance / 3;
         }
     }
+
+    public void quickSortWithoutPivot() {
+        quickSortWithoutPivot(0, length(end) - 1);
+    }
+
+    private void quickSortWithoutPivot(int start, int end) {
+        int i = start, j = end;
+        boolean flag = true;
+        while (i < j) {
+            if (flag) {
+                while (i < j && seek(i).getValue() < seek(j).getValue()) {
+                    i++;
+                }
+            }
+            else {
+                while (i < j && seek(j).getValue() > seek(i).getValue()) {
+                    j--;
+                }
+            }
+            int value = seek(i).getValue();
+            seek(i).setValue(seek(j).getValue());
+            seek(j).setValue(value);
+            flag = !flag;
+        }
+
+        if (start < i - 1) {
+            quickSortWithoutPivot(start, i - 1);
+        }
+        if (j + 1 < end) {
+            quickSortWithoutPivot(j + 1, end);
+        }
+    }
 }
