@@ -186,7 +186,7 @@ public class List {
     public void heapSort() {
         Node aux = end;
         while (aux != start) {
-            int length= length(aux), value;
+            int length = length(aux), value;
             int parent = length / 2 - 1;
             while (parent >= 0) {
                 int leftChild = 2 * parent + 1, rightChild = leftChild + 1;
@@ -265,6 +265,44 @@ public class List {
         }
         if (j + 1 < end) {
             quickSortWithoutPivot(j + 1, end);
+        }
+    }
+
+    public void quickSortWithPivot() {
+        quickSortWithPivot(0, length(end) - 1);
+    }
+
+    private void quickSortWithPivot(int start, int end) {
+        int i = start, j = end;
+        Node pivot = seek((start + end) / 2);
+        while (i < j) {
+            Node currentI = seek(i);
+            while (currentI.getValue() < pivot.getValue()) {
+                i++;
+                currentI = currentI.getNext();
+            }
+
+            Node currentJ = seek(j);
+            while (currentJ.getValue() > pivot.getValue()) {
+                j--;
+                currentJ = currentJ.getPrev();
+            }
+
+            if (i <= j) {
+                int value = currentI.getValue();
+                currentI.setValue(currentJ.getValue());
+                currentJ.setValue(value);
+                i++;
+                j--;
+            }
+        }
+
+        if (start < j) {
+            quickSortWithPivot(start, j);
+        }
+
+        if (i < end) {
+            quickSortWithPivot(i, end);
         }
     }
 }
