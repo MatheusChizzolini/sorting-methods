@@ -389,4 +389,27 @@ public class File {
 
         temp.delete();
     }
+
+    public void gnomeSort() {
+        int n = size();
+        int pos = 0;
+        Record current = new Record(), prev = new Record();
+        while (pos < n) {
+            if (pos == 0) {
+                pos++;
+            }
+
+            seek(pos - 1);
+            prev.read(file);
+            current.read(file);
+            if (current.getValue() >= prev.getValue()) {
+                pos++;
+            } else {
+                seek(pos - 1);
+                current.write(file);
+                prev.write(file);
+                pos--;
+            }
+        }
+    }
 }
