@@ -351,4 +351,35 @@ public class List {
             current = current.getNext();
         }
     }
+
+    public void bucketSort() {
+        int k = (int) Math.sqrt(length(end));
+        int maxValue = getMaxValue();
+        int limit = (maxValue / k) + 1;
+        List[] buckets = new List[k];
+        for (int i = 0; i < k; i++) {
+            buckets[i] = new List();
+        }
+
+        Node current = start;
+        while (current != null) {
+            int index = current.getValue() / limit;
+            buckets[index].addLast(current.getValue());
+            current = current.getNext();
+        }
+
+        for (int i = 0; i < k; i++) {
+            buckets[i].insertionSort();
+        }
+
+        current = start;
+        for (int i = 0; i < k; i++) {
+            Node aux = buckets[i].start;
+            while (aux != null) {
+                current.setValue(aux.getValue());
+                current = current.getNext();
+                aux = aux.getNext();
+            }
+        }
+    }
 }
