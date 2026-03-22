@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class File {
+    private String name;
     private RandomAccessFile file;
 
     public File(String name) {
+        this.name = name;
         try {
             file = new RandomAccessFile(name, "rw");
         } catch (IOException ignored) {}
@@ -14,6 +16,14 @@ public class File {
 
     public RandomAccessFile getFile() {
         return file;
+    }
+
+    private void delete() {
+        try {
+            file.close();
+            java.io.File javaFile = new java.io.File(name);
+            javaFile.delete();
+        } catch (IOException ignored) {}
     }
 
     public void truncate(long position) {
@@ -329,5 +339,54 @@ public class File {
         if (j + 1 < end) {
             quickSortWithoutPivot(j + 1, end);
         }
+    }
+
+    private int getMaxValue() {
+        int maxValue = 0;
+        seek(0);
+        while (!eof()) {
+            Record current = new Record();
+            current.read(file);
+            if (current.getValue() > maxValue) {
+                maxValue = current.getValue();
+            }
+        }
+
+        return maxValue;
+    }
+
+    public void countingSort() {
+        int maxValue = getMaxValue();
+        int[] countArray = new int[maxValue + 1];
+        Record current = new Record();
+        seek(0);
+        while (!eof()) {
+            current.read(file);
+            countArray[current.getValue()]++;
+        }
+
+        for (int i = 1; i <= maxValue; i++) {
+            countArray[i] += countArray[i - 1];
+        }
+
+        File temp = new File("temp.dat");
+        for (int i = size() - 1; i >= 0; i--) {
+            seek(i);
+            current.read(file);
+            int value = current.getValue();
+            countArray[value]--;
+            int pos = countArray[value];
+            temp.seek(pos);
+            current.write(temp.getFile());
+        }
+
+        for (int i = 0; i < size(); i++) {
+            temp.seek(i);
+            current.read(temp.getFile());
+            seek(i);
+            current.write(file);
+        }
+
+        temp.delete();
     }
 }
