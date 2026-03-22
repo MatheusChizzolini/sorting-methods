@@ -305,4 +305,50 @@ public class List {
             quickSortWithPivot(i, end);
         }
     }
+
+    private int getMaxValue() {
+        Node aux = start;
+        int maxValue = 0;
+        while (aux != null) {
+            if (aux.getValue() > maxValue) {
+                maxValue = aux.getValue();
+            }
+
+            aux = aux.getNext();
+        }
+
+        return maxValue;
+    }
+
+    public void countingSort() {
+        int maxValue = getMaxValue();
+        int[] countArray = new int[maxValue + 1];
+        Node current = start;
+        while (current != null) {
+            int value = current.getValue();
+            countArray[value]++;
+            current = current.getNext();
+        }
+
+        for (int i = 1; i <= maxValue; i++) {
+            countArray[i] += countArray[i - 1];
+        }
+
+        int[] answer = new int[length(end)];
+        current = end;
+        while (current != null) {
+            int value = current.getValue();
+            countArray[value]--;
+            answer[countArray[value]] = value;
+            current = current.getPrev();
+        }
+
+        int i = 0;
+        current = start;
+        while (current != null) {
+            current.setValue(answer[i]);
+            i++;
+            current = current.getNext();
+        }
+    }
 }
