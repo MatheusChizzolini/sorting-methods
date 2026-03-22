@@ -10,7 +10,7 @@ public class LinkedListMain {
         list.addLast(4);
         list.addLast(2);
 
-        list.bucketSort();
+        list.gnomeSort();
         list.printList();
     }
 }

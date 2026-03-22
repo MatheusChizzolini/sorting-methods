@@ -382,4 +382,22 @@ public class List {
             }
         }
     }
+
+    public void gnomeSort() {
+        Node current = start;
+        while (current != null) {
+            if (current == start) {
+                current = current.getNext();
+            }
+
+            if (current.getValue() >= current.getPrev().getValue()) {
+                current = current.getNext();
+            } else {
+                int value = current.getValue();
+                current.setValue(current.getPrev().getValue());
+                current.getPrev().setValue(value);
+                current = current.getPrev();
+            }
+        }
+    }
 }
