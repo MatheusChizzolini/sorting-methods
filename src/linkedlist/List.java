@@ -352,6 +352,45 @@ public class List {
         }
     }
 
+    private void countingSort(int exp) {
+        int[] countArray = new int[10];
+        Node current = start;
+        while (current != null) {
+            int digit = (current.getValue() / exp) % 10;
+            countArray[digit]++;
+            current = current.getNext();
+        }
+
+        for (int i = 1; i < 10; i++) {
+            countArray[i] += countArray[i - 1];
+        }
+
+        int[] answer = new int[length(end)];
+        current = end;
+        while (current != null) {
+            int value = current.getValue();
+            int digit = (value / exp) % 10;
+            countArray[digit]--;
+            answer[countArray[digit]] = value;
+            current = current.getPrev();
+        }
+
+        int i = 0;
+        current = start;
+        while (current != null) {
+            current.setValue(answer[i]);
+            i++;
+            current = current.getNext();
+        }
+    }
+
+    public void radixSort() {
+        int maxValue = getMaxValue();
+        for (int exp = 1; maxValue / exp > 0 ; exp *= 10) {
+            countingSort(exp);
+        }
+    }
+
     public void bucketSort() {
         int k = (int) Math.sqrt(length(end));
         int maxValue = getMaxValue();
