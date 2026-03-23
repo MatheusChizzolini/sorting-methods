@@ -412,4 +412,31 @@ public class File {
             }
         }
     }
+
+    public void combSort() {
+        int n = size();
+        int gap = n;
+        boolean swapped = true;
+        while (gap > 1 || swapped) {
+            swapped = false;
+            gap = (gap * 10) / 13;
+            if (gap < 1) {
+                gap  = 1;
+            }
+
+            Record current = new Record(), aux = new Record();
+            for (int i = 0; i < n - gap; i++) {
+                seek(i);
+                current.read(file);
+                seek(i + gap);
+                aux.read(file);
+                if (current.getValue() > aux.getValue()) {
+                    seek(i);
+                    aux.write(file);
+                    seek(i + gap);
+                    current.write(file);
+                }
+            }
+        }
+    }
 }
