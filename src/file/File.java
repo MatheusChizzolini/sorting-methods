@@ -390,6 +390,43 @@ public class File {
         temp.delete();
     }
 
+    public void bucketSort() {
+        int k = (int) Math.sqrt(size());
+        int maxValue = getMaxValue();
+        int limit = (maxValue / k) + 1;
+        File[] buckets = new File[k];
+        for (int i = 0; i < k; i++) {
+            buckets[i] = new File("bucket" + i + ".dat");
+            buckets[i].truncate(0);
+        }
+
+        seek(0);
+        Record current = new Record();
+        while (!eof()) {
+            current.read(file);
+            int index = current.getValue() / limit;
+            buckets[index].addLast(new Record(current.getValue()));
+        }
+
+        for (int i = 0; i < k; i++) {
+            buckets[i].insertionSort();
+        }
+
+        seek(0);
+        Record aux = new Record();
+        for (int i = 0; i < k; i++) {
+            buckets[i].seek(0);
+            while (!buckets[i].eof()) {
+                aux.read(buckets[i].getFile());
+                aux.write(file);
+            }
+        }
+
+        for (int i = 0; i < k; i++) {
+            buckets[i].delete();
+        }
+    }
+
     public void gnomeSort() {
         int n = size();
         int pos = 0;
