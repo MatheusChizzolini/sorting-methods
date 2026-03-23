@@ -390,6 +390,49 @@ public class File {
         temp.delete();
     }
 
+    private void countingSort(int exp) {
+        int[] countArray = new int[10];
+        Record current = new Record();
+        seek(0);
+        while (!eof()) {
+            current.read(file);
+            int digit = (current.getValue() / exp) % 10;
+            countArray[digit]++;
+        }
+
+        for (int i = 1; i < 10; i++) {
+            countArray[i] += countArray[i - 1];
+        }
+
+        File temp = new File("temp.dat");
+        for (int i = size() - 1; i >= 0; i--) {
+            seek(i);
+            current.read(file);
+            int value = current.getValue();
+            int digit = (value / exp) % 10;
+            countArray[digit]--;
+            int pos = countArray[digit];
+            temp.seek(pos);
+            current.write(temp.getFile());
+        }
+
+        for (int i = 0; i < size(); i++) {
+            temp.seek(i);
+            current.read(temp.getFile());
+            seek(i);
+            current.write(file);
+        }
+
+        temp.delete();
+    }
+
+    public void radixSort() {
+        int maxValue = getMaxValue();
+        for (int exp = 1; maxValue / exp > 0; exp *= 10) {
+            countingSort(exp);
+        }
+    }
+
     public void bucketSort() {
         int k = (int) Math.sqrt(size());
         int maxValue = getMaxValue();
