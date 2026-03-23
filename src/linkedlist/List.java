@@ -400,4 +400,31 @@ public class List {
             }
         }
     }
+
+    public void combSort() {
+        int n = length(end);
+        int gap = n;
+        boolean swapped = true;
+        while (gap > 1 || swapped) {
+            swapped = false;
+            gap = (gap * 10) / 13;
+            if (gap < 1) {
+                gap = 1;
+            }
+
+            Node current = start;
+            Node aux = seek(gap);
+            for (int i = 0; i < n - gap; i++) {
+                if (current.getValue() > aux.getValue()) {
+                    int value = current.getValue();
+                    current.setValue(aux.getValue());
+                    aux.setValue(value);
+                    swapped = true;
+                }
+
+                current = current.getNext();
+                aux = aux.getNext();
+            }
+        }
+    }
 }
