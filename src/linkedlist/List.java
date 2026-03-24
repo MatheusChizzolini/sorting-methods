@@ -407,12 +407,9 @@ public class List {
             current = current.getNext();
         }
 
-        for (int i = 0; i < k; i++) {
-            buckets[i].insertionSort();
-        }
-
         current = start;
         for (int i = 0; i < k; i++) {
+            buckets[i].insertionSort();
             Node aux = buckets[i].start;
             while (aux != null) {
                 current.setValue(aux.getValue());
