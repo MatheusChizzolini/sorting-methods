@@ -463,4 +463,67 @@ public class List {
             }
         }
     }
+
+    private void partition(List list1, List list2) {
+        Node mid = seek(length(end) / 2);
+        Node current = start;
+        while (current != mid) {
+            list1.addLast(current.getValue());
+            current = current.getNext();
+        }
+
+        while (current != null) {
+           list2.addLast(current.getValue());
+           current = current.getNext();
+        }
+    }
+
+    private void merge(List list1, List list2, int seq) {
+        int i = 0, j = 0, fixedSeq = seq;
+        Node current = start;
+        Node aux1 = list1.start;
+        Node aux2 = list2.start;
+        while (current != null) {
+            while (i < seq && j < seq && aux1 != null && aux2 != null) {
+                if (aux1.getValue() < aux2.getValue()) {
+                    current.setValue(aux1.getValue());
+                    aux1 = aux1.getNext();
+                    i++;
+                } else {
+                    current.setValue(aux2.getValue());
+                    aux2 = aux2.getNext();
+                    j++;
+                }
+
+                current = current.getNext();
+            }
+
+            while (i < seq && aux1 != null) {
+                current.setValue(aux1.getValue());
+                aux1 = aux1.getNext();
+                current = current.getNext();
+                i++;
+            }
+
+            while (j < seq && aux2 != null) {
+                current.setValue(aux2.getValue());
+                aux2 = aux2.getNext();
+                current = current.getNext();
+                j++;
+            }
+
+            seq += fixedSeq;
+        }
+    }
+
+    public void mergeSortFirst() {
+        int seq = 1, n = length(end);
+        while (seq < n) {
+            List list1 = new List();
+            List list2 = new List();
+            partition(list1, list2);
+            merge(list1, list2, seq);
+            seq *= 2;
+        }
+    }
 }
