@@ -519,4 +519,74 @@ public class File {
             }
         }
     }
+
+    private void partition(File temp1, File temp2) {
+        int n = size();
+        int mid = n / 2;
+        seek(0);
+        Record current = new Record();
+        for (int i = 0; i < mid; i++) {
+            current.read(file);
+            temp1.addLast(new Record(current.getValue()));
+        }
+
+        for (int i = mid; i < n; i++) {
+            current.read(file);
+            temp2.addLast(new Record(current.getValue()));
+        }
+    }
+
+    private void merge(File temp1, File temp2, int seq) {
+        int i = 0, j = 0, fixedSeq = seq;
+        seek(0);
+        Record aux1 = new Record();
+        Record aux2 = new Record();
+        while (!eof()) {
+           while (i < seq && j < seq) {
+               temp1.seek(i);
+               aux1.read(temp1.getFile());
+               temp2.seek(j);
+               aux2.read(temp2.getFile());
+               if (aux1.getValue() < aux2.getValue()) {
+                   aux1.write(file);
+                   i++;
+               } else {
+                   aux2.write(file);
+                   j++;
+               }
+           }
+
+           while (i < seq) {
+               temp1.seek(i);
+               aux1.read(temp1.getFile());
+               aux1.write(file);
+               i++;
+           }
+
+           while (j < seq) {
+               temp2.seek(j);
+               aux2.read(temp2.getFile());
+               aux2.write(file);
+               j++;
+           }
+
+           seq += fixedSeq;
+        }
+    }
+
+    public void mergeSortFirst() {
+        int seq = 1, n = size();
+        File temp1 = new File("temp1.dat");
+        File temp2 = new File("temp2.dat");
+        while (seq < n) {
+            temp1.truncate(0);
+            temp2.truncate(0);
+            partition(temp1, temp2);
+            merge(temp1, temp2, seq);
+            seq *= 2;
+        }
+
+        temp1.delete();
+        temp2.delete();
+    }
 }
