@@ -526,4 +526,56 @@ public class List {
             seq *= 2;
         }
     }
+
+
+    public void mergeSortSecond() {
+        mergeSortSecond(0, length(end) - 1);
+    }
+
+    private void mergeSortSecond(int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSortSecond(left, mid);
+            mergeSortSecond(mid + 1, right);
+            merge(left, mid, mid + 1, right);
+        }
+    }
+
+    private void merge(int start1, int end1, int start2, int end2) {
+        List aux = new List();
+        int i = start1, j = start2;
+        Node auxI = seek(i);
+        Node auxJ = seek(j);
+        while (i <= end1 && j <= end2) {
+            if (auxI.getValue() < auxJ.getValue()) {
+                aux.addLast(auxI.getValue());
+                auxI = auxI.getNext();
+                i++;
+            } else {
+                aux.addLast(auxJ.getValue());
+                auxJ = auxJ.getNext();
+                j++;
+            }
+        }
+
+        while (i <= end1) {
+            aux.addLast(auxI.getValue());
+            auxI = auxI.getNext();
+            i++;
+        }
+
+        while (j <= end2) {
+            aux.addLast(auxJ.getValue());
+            auxJ = auxJ.getNext();
+            j++;
+        }
+
+        Node a = aux.start;
+        Node current = seek(start1);
+        while (a != null) {
+            current.setValue(a.getValue());
+            a = a.getNext();
+            current = current.getNext();
+        }
+    }
 }

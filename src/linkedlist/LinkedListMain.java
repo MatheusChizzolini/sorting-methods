@@ -13,7 +13,7 @@ public class LinkedListMain {
         list.addLast(19);
         list.addLast(7);
 
-        list.mergeSortFirst();
+        list.mergeSortSecond();
         list.printList();
     }
 }
