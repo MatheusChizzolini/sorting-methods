@@ -341,6 +341,51 @@ public class File {
         }
     }
 
+    public void quickSortWithPivot() {
+        quickSortWithPivot(0, size() - 1);
+    }
+
+    private void quickSortWithPivot(int start, int end) {
+        Record pivot = new Record(), recordI = new Record(), recordJ = new Record();
+        seek((start + end) / 2);
+        pivot.read(file);
+        int pivotValue = pivot.getValue();
+        int i = start, j = end;
+        while (i < j) {
+            seek(i);
+            recordI.read(file);
+            while (recordI.getValue() < pivotValue) {
+                i++;
+                seek(i);
+                recordI.read(file);
+            }
+
+            seek(j);
+            recordJ.read(file);
+            while (recordJ.getValue() > pivotValue) {
+                j--;
+                seek(j);
+                recordJ.read(file);
+            }
+
+            if (i <= j) {
+                seek(i);
+                recordJ.write(file);
+                seek(j);
+                recordI.write(file);
+                i++;
+                j--;
+            }
+        }
+
+        if (start < j) {
+            quickSortWithPivot(start, j);
+        }
+        if (i < end) {
+            quickSortWithPivot(i, end);
+        }
+    }
+
     private int getMaxValue() {
         int maxValue = 0;
         seek(0);
