@@ -634,4 +634,65 @@ public class File {
         temp1.delete();
         temp2.delete();
     }
+
+    public void mergeSortSecond() {
+        File temp = new File("temp.dat");
+        mergeSortSecond(0, size() - 1, temp);
+        temp.delete();
+    }
+
+    private void mergeSortSecond(int left, int right, File temp) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSortSecond(left, mid, temp);
+            mergeSortSecond(mid + 1, right, temp);
+            merge(left, mid, mid + 1, right, temp);
+        }
+    }
+
+    private void merge(int start1, int end1, int start2, int end2, File temp) {
+        int i = start1, j = start2, k = 0;
+        Record auxI = new Record(), auxJ = new Record();
+        while (i <= end1 && j <= end2) {
+            seek(i);
+            auxI.read(file);
+            seek(j);
+            auxJ.read(file);
+
+            temp.seek(k);
+            if (auxI.getValue() < auxJ.getValue()) {
+                auxI.write(temp.getFile());
+                i++;
+            } else {
+                auxJ.write(temp.getFile());
+                j++;
+            }
+            k++;
+        }
+
+        while (i <= end1) {
+            seek(i);
+            auxI.read(file);
+            temp.seek(k);
+            auxI.write(temp.getFile());
+            i++;
+            k++;
+        }
+
+        while (j <= end2) {
+            seek(j);
+            auxJ.read(file);
+            temp.seek(k);
+            auxJ.write(temp.getFile());
+            j++;
+            k++;
+        }
+
+        for (i = 0; i < k; i++) {
+            temp.seek(i);
+            auxI.read(temp.getFile());
+            seek(start1 + i);
+            auxI.write(file);
+        }
+    }
 }
