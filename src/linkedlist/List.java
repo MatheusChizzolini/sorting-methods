@@ -527,7 +527,6 @@ public class List {
         }
     }
 
-
     public void mergeSortSecond() {
         mergeSortSecond(0, length(end) - 1);
     }
@@ -576,6 +575,45 @@ public class List {
             current.setValue(a.getValue());
             a = a.getNext();
             current = current.getNext();
+        }
+    }
+
+    private void insertionSort(int start, int end) {
+        if (start < end) {
+            Node startNode = seek(start);
+            Node current = startNode.getNext();
+            int pos = start + 1;
+            while (current != null && pos <= end) {
+                int value = current.getValue();
+                Node aux = current;
+                while (aux != startNode && value < aux.getPrev().getValue()) {
+                    aux.setValue(aux.getPrev().getValue());
+                    aux = aux.getPrev();
+                }
+
+                aux.setValue(value);
+                current = current.getNext();
+                pos++;
+            }
+        }
+    }
+
+    public void timSort() {
+        int n = length(end);
+        final int RUN = 4;
+        for (int i = 0; i < n; i += RUN) {
+            int end = Math.min((i + RUN - 1), (n - 1));
+            insertionSort(i, end);
+        }
+
+        for (int i = RUN; i < n; i = 2 * i) {
+            for (int start = 0; start < n; start += 2 * i) {
+                int mid = start + i - 1;
+                int end = Math.min((start + 2 * i - 1), (n - 1));
+                if (mid < end) {
+                    merge(start, mid, mid + 1, end);
+                }
+            }
         }
     }
 }
