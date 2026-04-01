@@ -15,7 +15,7 @@ public class FileMain {
         file.addLast(new Record(7));
         file.seek(0);
 
-        file.mergeSortSecond();
+        file.timSort();
         file.printFile();
     }
 }

@@ -653,19 +653,26 @@ public class File {
     private void merge(int start1, int end1, int start2, int end2, File temp) {
         int i = start1, j = start2, k = 0;
         Record auxI = new Record(), auxJ = new Record();
+        seek(i);
+        auxI.read(file);
+        seek(j);
+        auxJ.read(file);
         while (i <= end1 && j <= end2) {
-            seek(i);
-            auxI.read(file);
-            seek(j);
-            auxJ.read(file);
-
             temp.seek(k);
             if (auxI.getValue() < auxJ.getValue()) {
                 auxI.write(temp.getFile());
                 i++;
+                if (i <= end1) {
+                    seek(i);
+                    auxI.read(file);
+                }
             } else {
                 auxJ.write(temp.getFile());
                 j++;
+                if (j <= end2) {
+                    seek(j);
+                    auxJ.read(file);
+                }
             }
             k++;
         }
@@ -694,5 +701,56 @@ public class File {
             seek(start1 + i);
             auxI.write(file);
         }
+    }
+
+    private void insertionSort(int start, int end) {
+        if (start < end) {
+            Record record = new Record(), aux = new Record();
+            for (int i = start + 1; i <= end; i++) {
+                seek(i);
+                record.read(file);
+
+                int j = i - 1;
+                seek(j);
+                aux.read(file);
+                while (j >= start && record.getValue() < aux.getValue()) {
+                    aux.write(file);
+                    j--;
+
+                    if (j >= start) {
+                        seek(j);
+                        aux.read(file);
+                    }
+                }
+
+                if (j + 1 != i) {
+                    seek(j + 1);
+                    record.write(file);
+                }
+            }
+        }
+    }
+
+    public void timSort() {
+        int n = size();
+        final int RUN = 4;
+        for (int i = 0; i < n; i += RUN) {
+            int end = Math.min((i + RUN - 1), (n - 1));
+            insertionSort(i , end);
+        }
+
+        File temp = new File("temp.dat");
+
+        for (int i = RUN; i < n; i = 2 * i) {
+            for (int start = 0; start < n; start += 2 * i) {
+                int mid = start + i - 1;
+                int end = Math.min((start + 2 * i - 1), (n - 1));
+                if (mid < end) {
+                    merge(start, mid, mid + 1, end, temp);
+                }
+            }
+        }
+
+        temp.delete();
     }
 }
