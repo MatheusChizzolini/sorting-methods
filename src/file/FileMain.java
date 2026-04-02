@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class FileMain {
     public static void execute() {
-        final int N = 10;
+        final int N = 16;
         File sortedFile = new File("sorted-file.dat");
         File reverseFile = new File("reverse-file.dat");
         File randomFile = new File("random-file.dat");
@@ -56,13 +56,13 @@ public class FileMain {
             tempoRand = (endTime - startTime) / 1000;
 
             compEqOrd = N - 1;
-            movEqOrd  = 3 * (N - 1);
+            movEqOrd = 3 * (N - 1);
 
             compEqRand = (N * N + N - 2) / 4;
             movEqRand  = (N * N + 9 * N - 10) / 4;
 
             compEqRev = (N * N + N - 4) / 4;
-            movEqRev  = (N * N + 3 * N - 4) / 2;
+            movEqRev = (N * N + 3 * N - 4) / 2;
 
             table.writeRow("Inserção Direta",
                     compOrd, compEqOrd, movOrd, movEqOrd, (int) tempoOrd,
@@ -99,14 +99,17 @@ public class FileMain {
             movRand = auxRandom.getMov();
             tempoRand = (endTime - startTime) / 1000;
 
-            compEqOrd = (int) (N * (Math.log(N) - Math.log(2.71828) + 0.5));
-            movEqOrd  = 3 * (N - 1);
+            double log2N = Math.log(N) / Math.log(2);
+            double log2E = Math.log(Math.E) / Math.log(2);
 
-            compEqRand = (int) (N * (Math.log(N) - Math.log(2.71828) + 0.5));
-            movEqRand  = (N * N + 9 * N - 10) / 4;
+            compEqOrd = (int) (N * (log2N - log2E + 0.5));
+            movEqOrd = 3 * (N - 1);
 
-            compEqRev = (int) (N * (Math.log(N) - Math.log(2.71828) + 0.5));
-            movEqRev  = (N * N + 3 * N - 4) / 2;
+            compEqRand = (int) (N * (log2N - log2E + 0.5));
+            movEqRand = (N * N + 9 * N - 10) / 4;
+
+            compEqRev = (int) (N * (log2N - log2E + 0.5));
+            movEqRev = (N * N + 3 * N - 4) / 2;
 
             table.writeRow("Inserção Binária",
                     compOrd, compEqOrd, movOrd, movEqOrd, (int) tempoOrd,
@@ -144,13 +147,13 @@ public class FileMain {
             tempoRand = (endTime - startTime) / 1000;
 
             compEqOrd = (N * N - N) / 2;
-            movEqOrd  = 3 * (N - 1);
+            movEqOrd = 3 * (N - 1);
 
             compEqRand = (N * N - N) / 2;
-            movEqRand  = (int) (N * (Math.log(N) + 0.577216));
+            movEqRand = (int) (N * (Math.log(N) + 0.577216));
 
             compEqRev = (N * N - N) / 2;
-            movEqRev  = (N * N) / 4 + 3 * (N - 1);
+            movEqRev = (N * N) / 4 + 3 * (N - 1);
 
             table.writeRow("Seleção",
                     compOrd, compEqOrd, movOrd, movEqOrd, (int) tempoOrd,
@@ -187,14 +190,14 @@ public class FileMain {
             movRand = auxRandom.getMov();
             tempoRand = (endTime - startTime) / 1000;
 
-            compEqOrd  = (N * N - N) / 2;
-            movEqOrd   = 0;
+            compEqOrd = N - 1;
+            movEqOrd = 0;
 
             compEqRand = (N * N - N) / 2;
-            movEqRand  = 3 * (N * N - N) / 2;
+            movEqRand = 3 * (N * N - N) / 4;
 
-            compEqRev  = (N * N - N) / 2;
-            movEqRev   = 3 * (N * N - N) / 4;
+            compEqRev = (N * N - N) / 2;
+            movEqRev = 3 * (N * N - N) / 2;
 
             table.writeRow("Bolha",
                     compOrd, compEqOrd, movOrd, movEqOrd, (int) tempoOrd,
@@ -231,14 +234,14 @@ public class FileMain {
             movRand = auxRandom.getMov();
             tempoRand = (endTime - startTime) / 1000;
 
-            compEqOrd  = (N * N - N) / 2;
-            movEqOrd   = 0;
+            compEqOrd = N - 1;
+            movEqOrd = 0;
 
             compEqRand = (N * N - N) / 2;
-            movEqRand  = 3 * (N * N - N) / 2;
+            movEqRand = 3 * (N * N - N) / 4;
 
-            compEqRev  = (N * N - N) / 2;
-            movEqRev   = 3 * (N * N - N) / 4;
+            compEqRev = (N * N - N) / 2;
+            movEqRev = 3 * (N * N - N) / 2;
 
             table.writeRow("Shake",
                     compOrd, compEqOrd, movOrd, movEqOrd, (int) tempoOrd,
@@ -451,6 +454,217 @@ public class FileMain {
             tempoRand = (endTime - startTime) / 1000;
 
             table.writeRow("Merge 2ª implement",
+                    compOrd, 0, movOrd, 0, (int) tempoOrd,
+                    compRev, 0, movRev, 0, (int) tempoRev,
+                    compRand, 0, movRand, 0, (int) tempoRand);
+
+
+            // Counting
+            sortedFile.initComp();
+            sortedFile.initMov();
+            startTime = System.currentTimeMillis();
+            sortedFile.countingSort();
+            endTime = System.currentTimeMillis();
+            compOrd = sortedFile.getComp();
+            movOrd = sortedFile.getMov();
+            tempoOrd = (endTime - startTime) / 1000;
+
+            auxReverse.copy(reverseFile.getFile());
+            auxReverse.initComp();
+            auxReverse.initMov();
+            startTime = System.currentTimeMillis();
+            auxReverse.countingSort();
+            endTime = System.currentTimeMillis();
+            compRev = auxReverse.getComp();
+            movRev = auxReverse.getMov();
+            tempoRev = (endTime - startTime) / 1000;
+
+            auxRandom.copy(randomFile.getFile());
+            auxRandom.initComp();
+            auxRandom.initMov();
+            startTime = System.currentTimeMillis();
+            auxRandom.countingSort();
+            endTime = System.currentTimeMillis();
+            compRand = auxRandom.getComp();
+            movRand = auxRandom.getMov();
+            tempoRand = (endTime - startTime) / 1000;
+
+            table.writeRow("Counting",
+                    compOrd, 0, movOrd, 0, (int) tempoOrd,
+                    compRev, 0, movRev, 0, (int) tempoRev,
+                    compRand, 0, movRand, 0, (int) tempoRand);
+
+            // Bucket
+            sortedFile.initComp();
+            sortedFile.initMov();
+            startTime = System.currentTimeMillis();
+            sortedFile.bucketSort();
+            endTime = System.currentTimeMillis();
+            compOrd = sortedFile.getComp();
+            movOrd = sortedFile.getMov();
+            tempoOrd = (endTime - startTime) / 1000;
+
+            auxReverse.copy(reverseFile.getFile());
+            auxReverse.initComp();
+            auxReverse.initMov();
+            startTime = System.currentTimeMillis();
+            auxReverse.bucketSort();
+            endTime = System.currentTimeMillis();
+            compRev = auxReverse.getComp();
+            movRev = auxReverse.getMov();
+            tempoRev = (endTime - startTime) / 1000;
+
+            auxRandom.copy(randomFile.getFile());
+            auxRandom.initComp();
+            auxRandom.initMov();
+            startTime = System.currentTimeMillis();
+            auxRandom.bucketSort();
+            endTime = System.currentTimeMillis();
+            compRand = auxRandom.getComp();
+            movRand = auxRandom.getMov();
+            tempoRand = (endTime - startTime) / 1000;
+
+            table.writeRow("Bucket",
+                    compOrd, 0, movOrd, 0, (int) tempoOrd,
+                    compRev, 0, movRev, 0, (int) tempoRev,
+                    compRand, 0, movRand, 0, (int) tempoRand);
+
+            // Radix
+            sortedFile.initComp();
+            sortedFile.initMov();
+            startTime = System.currentTimeMillis();
+            sortedFile.radixSort();
+            endTime = System.currentTimeMillis();
+            compOrd = sortedFile.getComp();
+            movOrd = sortedFile.getMov();
+            tempoOrd = (endTime - startTime) / 1000;
+
+            auxReverse.copy(reverseFile.getFile());
+            auxReverse.initComp();
+            auxReverse.initMov();
+            startTime = System.currentTimeMillis();
+            auxReverse.radixSort();
+            endTime = System.currentTimeMillis();
+            compRev = auxReverse.getComp();
+            movRev = auxReverse.getMov();
+            tempoRev = (endTime - startTime) / 1000;
+
+            auxRandom.copy(randomFile.getFile());
+            auxRandom.initComp();
+            auxRandom.initMov();
+            startTime = System.currentTimeMillis();
+            auxRandom.radixSort();
+            endTime = System.currentTimeMillis();
+            compRand = auxRandom.getComp();
+            movRand = auxRandom.getMov();
+            tempoRand = (endTime - startTime) / 1000;
+
+            table.writeRow("Radix",
+                    compOrd, 0, movOrd, 0, (int) tempoOrd,
+                    compRev, 0, movRev, 0, (int) tempoRev,
+                    compRand, 0, movRand, 0, (int) tempoRand);
+
+            // Comb
+            sortedFile.initComp();
+            sortedFile.initMov();
+            startTime = System.currentTimeMillis();
+            sortedFile.combSort();
+            endTime = System.currentTimeMillis();
+            compOrd = sortedFile.getComp();
+            movOrd = sortedFile.getMov();
+            tempoOrd = (endTime - startTime) / 1000;
+
+            auxReverse.copy(reverseFile.getFile());
+            auxReverse.initComp();
+            auxReverse.initMov();
+            startTime = System.currentTimeMillis();
+            auxReverse.combSort();
+            endTime = System.currentTimeMillis();
+            compRev = auxReverse.getComp();
+            movRev = auxReverse.getMov();
+            tempoRev = (endTime - startTime) / 1000;
+
+            auxRandom.copy(randomFile.getFile());
+            auxRandom.initComp();
+            auxRandom.initMov();
+            startTime = System.currentTimeMillis();
+            auxRandom.combSort();
+            endTime = System.currentTimeMillis();
+            compRand = auxRandom.getComp();
+            movRand = auxRandom.getMov();
+            tempoRand = (endTime - startTime) / 1000;
+
+            table.writeRow("Comb",
+                    compOrd, 0, movOrd, 0, (int) tempoOrd,
+                    compRev, 0, movRev, 0, (int) tempoRev,
+                    compRand, 0, movRand, 0, (int) tempoRand);
+
+            // Gnome
+            sortedFile.initComp();
+            sortedFile.initMov();
+            startTime = System.currentTimeMillis();
+            sortedFile.gnomeSort();
+            endTime = System.currentTimeMillis();
+            compOrd = sortedFile.getComp();
+            movOrd = sortedFile.getMov();
+            tempoOrd = (endTime - startTime) / 1000;
+
+            auxReverse.copy(reverseFile.getFile());
+            auxReverse.initComp();
+            auxReverse.initMov();
+            startTime = System.currentTimeMillis();
+            auxReverse.gnomeSort();
+            endTime = System.currentTimeMillis();
+            compRev = auxReverse.getComp();
+            movRev = auxReverse.getMov();
+            tempoRev = (endTime - startTime) / 1000;
+
+            auxRandom.copy(randomFile.getFile());
+            auxRandom.initComp();
+            auxRandom.initMov();
+            startTime = System.currentTimeMillis();
+            auxRandom.gnomeSort();
+            endTime = System.currentTimeMillis();
+            compRand = auxRandom.getComp();
+            movRand = auxRandom.getMov();
+            tempoRand = (endTime - startTime) / 1000;
+
+            table.writeRow("Gnome",
+                    compOrd, 0, movOrd, 0, (int) tempoOrd,
+                    compRev, 0, movRev, 0, (int) tempoRev,
+                    compRand, 0, movRand, 0, (int) tempoRand);
+
+            // Tim
+            sortedFile.initComp();
+            sortedFile.initMov();
+            startTime = System.currentTimeMillis();
+            sortedFile.timSort();
+            endTime = System.currentTimeMillis();
+            compOrd = sortedFile.getComp();
+            movOrd = sortedFile.getMov();
+            tempoOrd = (endTime - startTime) / 1000;
+
+            auxReverse.copy(reverseFile.getFile());
+            auxReverse.initComp();
+            auxReverse.initMov();
+            startTime = System.currentTimeMillis();
+            auxReverse.timSort();
+            endTime = System.currentTimeMillis();
+            compRev = auxReverse.getComp();
+            movRev = auxReverse.getMov();
+            tempoRev = (endTime - startTime) / 1000;
+
+            auxRandom.copy(randomFile.getFile());
+            auxRandom.initComp();
+            auxRandom.initMov();
+            startTime = System.currentTimeMillis();
+            auxRandom.timSort();
+            endTime = System.currentTimeMillis();
+            compRand = auxRandom.getComp();
+            movRand = auxRandom.getMov();
+            tempoRand = (endTime - startTime) / 1000;
+
+            table.writeRow("Tim",
                     compOrd, 0, movOrd, 0, (int) tempoOrd,
                     compRev, 0, movRev, 0, (int) tempoRev,
                     compRand, 0, movRand, 0, (int) tempoRand);

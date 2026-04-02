@@ -194,14 +194,16 @@ public class File {
                 }
             }
 
-            seek(minIndex);
-            min.read(file);
-            seek(minIndex);
-            record.write(file);
-            mov++;
-            seek(i);
-            min.write(file);
-            mov++;
+            if (minIndex != i) {
+                seek(minIndex);
+                min.read(file);
+                seek(minIndex);
+                record.write(file);
+                mov++;
+                seek(i);
+                min.write(file);
+                mov++;
+            }
         }
     }
 
@@ -680,9 +682,11 @@ public class File {
                comp++;
                if (aux1.getValue() < aux2.getValue()) {
                    aux1.write(file);
+                   mov++;
                    i++;
                } else {
                    aux2.write(file);
+                   mov++;
                    j++;
                }
            }
