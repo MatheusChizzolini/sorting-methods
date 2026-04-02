@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class FileMain {
     public static void execute() {
-        final int N = 16;
+        final int N = 1024;
         File sortedFile = new File("sorted-file.dat");
         File reverseFile = new File("reverse-file.dat");
         File randomFile = new File("random-file.dat");
@@ -17,7 +17,7 @@ public class FileMain {
         File auxRandom = new File("aux-random.dat");
 
         try {
-            Table table = new Table("tabela.txt", false);
+            Table table = new Table("result-table.txt", false);
             long startTime, endTime;
 
             int compOrd, compEqOrd, movOrd, movEqOrd;
