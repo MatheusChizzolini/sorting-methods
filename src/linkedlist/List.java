@@ -221,11 +221,11 @@ public class List {
         distance = distance / 3;
         while (distance >= 1) {
             for (int i = distance; i < length(end); i++) {
-                Node current = seek(i);
-                int value = current.getValue();
+                int value = seek(i).getValue();
                 int position = i;
-                while (position >= distance && current.getValue() < seek(position - distance).getValue()) {
-                    current.setValue(seek(position - distance).getValue());
+
+                while (position >= distance && seek(position - distance).getValue() > value) {
+                    seek(position).setValue(seek(position - distance).getValue());
                     position = position - distance;
                 }
 
@@ -245,12 +245,12 @@ public class List {
         boolean flag = true;
         while (i < j) {
             if (flag) {
-                while (i < j && seek(i).getValue() < seek(j).getValue()) {
+                while (i < j && seek(i).getValue() <= seek(j).getValue()) {
                     i++;
                 }
             }
             else {
-                while (i < j && seek(j).getValue() > seek(i).getValue()) {
+                while (i < j && seek(j).getValue() >= seek(i).getValue()) {
                     j--;
                 }
             }
