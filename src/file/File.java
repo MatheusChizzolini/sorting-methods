@@ -241,12 +241,14 @@ public class File {
             for (int i = start; i < end; i++) {
                 seek(i);
                 record.read(file);
+                seek(i + 1);
                 aux.read(file);
                 comp++;
                 if (record.getValue() > aux.getValue()) {
                     seek(i);
                     aux.write(file);
                     mov++;
+                    seek(i + 1);
                     record.write(file);
                     mov++;
                     swapped = true;
@@ -257,14 +259,16 @@ public class File {
             if (swapped) {
                 swapped = false;
                 for (int i = end; i > start; i--) {
-                    seek(i);
+                    seek(i - 1);
                     record.read(file);
+                    seek(i);
                     aux.read(file);
                     comp++;
                     if (record.getValue() > aux.getValue()) {
-                        seek(i);
+                        seek(i - 1);
                         aux.write(file);
                         mov++;
+                        seek(i);
                         record.write(file);
                         mov++;
                         swapped = true;
